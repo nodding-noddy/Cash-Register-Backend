@@ -22,8 +22,8 @@ let lastOrderNumber = 99;
 
 const connection = mysql.createConnection({
   host:'localhost',
-  user:'manj',
-  password:'marianjaro',
+  user:'',
+  password:'',
   database:'cash_register'
 });
 
@@ -62,7 +62,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on('new order placed', (orderDetails) => {
-    // console.log('New order placed! Order Details are',orderDetails);
     if(restroSocket) {
       socket.emit('ack', orderDetails);
       lastOrderNumber = lastOrderNumber + 1;
@@ -75,7 +74,6 @@ io.on('connection', (socket) => {
         items:orderDetails.items,
         socket: socket,
       }
-      // console.log('New order details are:',orderDetails);
       restroSocket.emit('new order', orderDetails);
     }else {
       socket.emit('restro offline');
@@ -94,11 +92,6 @@ io.on('connection', (socket) => {
     userSocketPool[orderNumber].socket.emit('collect order');
   })
 });
-
-// app.get('/images', (req, resp) => {
-//   const itemName = req.query.itemName;
-//   resp.sendFile(path.join(__dirname,`public/uploads/${itemName}.jpg`));
-// });
 
 app.post('/upload-menu-item', (req, resp) => {
 
